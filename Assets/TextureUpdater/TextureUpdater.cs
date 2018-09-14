@@ -45,7 +45,6 @@ public static class TextureUpdater
     {
         if (initialized) return;
 
-        Debug.Log("Init");
         commandBuffer = new CommandBuffer();
         pointerBuffers = new Dictionary<uint, IntPtr>();
         textureUpdateCallbackPtr = GetTextureUpdateCallback();
@@ -57,8 +56,6 @@ public static class TextureUpdater
     public static void Deinit()
     {
         if (!initialized) return;
-
-        Debug.Log("Deinit");
 
         if (commandBuffer != null)
         {
