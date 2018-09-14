@@ -17,7 +17,7 @@ public static class TextureUpdater
 #else
     private const string libraryName = "TextureUpdater";
 #endif
-    
+
     [StructLayout(LayoutKind.Sequential)]
     public struct UnityRenderingExtTextureUpdateParams
     {
@@ -35,7 +35,7 @@ public static class TextureUpdater
     private static IntPtr textureUpdateCallbackPtr;
 
     private static bool initialized;
-    
+
 //    static TextureUpdater()
 //    {
 //        Init();
@@ -43,8 +43,8 @@ public static class TextureUpdater
 //
     public static void Init()
     {
-        if(initialized) return;
-    
+        if (initialized) return;
+
         Debug.Log("Init");
         commandBuffer = new CommandBuffer();
         pointerBuffers = new Dictionary<uint, IntPtr>();
@@ -56,16 +56,16 @@ public static class TextureUpdater
 
     public static void Deinit()
     {
-        if(!initialized) return;
+        if (!initialized) return;
 
         Debug.Log("Deinit");
-        
+
         if (commandBuffer != null)
         {
             commandBuffer.Dispose();
             commandBuffer = null;
         }
-        
+
         SetTextureEventFuntions(null, null);
 
         initialized = false;
@@ -96,7 +96,7 @@ public static class TextureUpdater
     public static void Update(Texture texture, IntPtr content)
     {
         Init();
-        
+
         var id = lastEventId++;
         pointerBuffers.Add(id, content);
         commandBuffer.IssuePluginCustomTextureUpdate(textureUpdateCallbackPtr, texture, id);
@@ -113,23 +113,24 @@ public static class TextureUpdater
     [DllImport(libraryName, EntryPoint = "TextureUpdater_SetTextureEventFuntions")]
     private static extern void SetTextureEventFuntions(TextureUpdateEventDelegate onUpdateTextureBegin,
         TextureUpdateEventDelegate onUpdateTextureEnd);
-    
+
     private static uint lastEventId;
     private static Dictionary<uint, IntPtr> pointerBuffers;
-        
+
     [MonoPInvokeCallback(typeof(TextureUpdateEventDelegate))]
     private static void OnUpdateTextureBegin(IntPtr eventParamsPtr)
     {
-        var eventParams = Marshal.PtrToStructure<UnityRenderingExtTextureUpdateParams>(eventParamsPtr);
+        var eventParams = (UnityRenderingExtTextureUpdateParams) Marshal.PtrToStructure(eventParamsPtr,
+            typeof(UnityRenderingExtTextureUpdateParams));
         pointerBuffers.TryGetValue(eventParams.userData, out eventParams.texData);
         Marshal.StructureToPtr(eventParams, eventParamsPtr, false);
     }
-    
+
     [MonoPInvokeCallback(typeof(TextureUpdateEventDelegate))]
     private static void OnUpdateTextureEnd(IntPtr eventParamsPtr)
     {
-        var eventParams = Marshal.PtrToStructure<UnityRenderingExtTextureUpdateParams>(eventParamsPtr);
+        var eventParams = (UnityRenderingExtTextureUpdateParams) Marshal.PtrToStructure(eventParamsPtr,
+            typeof(UnityRenderingExtTextureUpdateParams));
         pointerBuffers.Remove(eventParams.userData);
     }
-
 }
