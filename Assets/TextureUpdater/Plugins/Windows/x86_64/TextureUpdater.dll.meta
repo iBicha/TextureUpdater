@@ -1,0 +1,35 @@
+fileFormatVersion: 2
+guid: 0345281e9d5be794dabb3d1f27288d15
+PluginImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  iconMap: {}
+  executionOrder: {}
+  isPreloaded: 0
+  isOverridable: 0
+  platformData:
+  - first:
+      Any: 
+    second:
+      enabled: 0
+      settings: {}
+  - first:
+      Editor: Editor
+    second:
+      enabled: 1
+      settings:
+        BUILD_TYPE: Release
+        CPU: x86_64
+        DefaultValueInitialized: true
+        OS: Windows
+        PLUGIN_BUILD_NUMBER: 1
+        PLUGIN_NAME: TextureUpdater
+        PLUGIN_VERSION: 1.0.0.0
+  - first:
+      Standalone: Win64
+    second:
+      enabled: 1
+      settings: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
