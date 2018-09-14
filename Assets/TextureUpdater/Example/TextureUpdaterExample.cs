@@ -50,27 +50,27 @@ public class TextureUpdaterExample : MonoBehaviour
 
     private void Start()
     {
-        texture = new Texture2D(256, 256, TextureFormat.RGBA32, false);
+        texture = new Texture2D(512, 512, TextureFormat.RGBA32, false);
         GetComponent<Renderer>().material.mainTexture = texture;
         colorBuffer = new NativeArray<Color32>(texture.width * texture.height, Allocator.Persistent);
     }
 
-    private JobHandle SchedulePlasma(int width, int height, float time)
+    private void ScheduleAndWaitForPlasmaJob(NativeArray<Color32> colors, int width, int height, float time)
     {
         var jobData = new PlasmaJob
         {
-            colors = colorBuffer,
+            colors = colors,
             width = width,
             height = height,
             time = time
         };
-        return jobData.Schedule(colorBuffer.Length, 32);
+        var handle = jobData.Schedule(colorBuffer.Length, 32);
+        handle.Complete();
     }
 
     private void Update()
     {
-        var handle = SchedulePlasma(texture.width, texture.height, Time.time);
-        handle.Complete();
+        ScheduleAndWaitForPlasmaJob(colorBuffer, texture.width, texture.height, Time.time);
 
         texture.Update(colorBuffer);
     }
