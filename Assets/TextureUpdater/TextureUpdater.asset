@@ -20,6 +20,15 @@ MonoBehaviour:
     BuildType: 0
     BuildPlatform: 7
     AndroidSdkVersion: 0
+    isEnabled: 0
+    foldoutAnimator:
+      m_Target: 0
+      speed: 2
+      m_Value: 0
+  - Architecture: 3
+    BuildType: 0
+    BuildPlatform: 4
+    AndroidSdkVersion: 0
     isEnabled: 1
     foldoutAnimator:
       m_Target: 1

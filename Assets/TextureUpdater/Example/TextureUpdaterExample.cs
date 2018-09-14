@@ -10,39 +10,35 @@ using Random = UnityEngine.Random;
 public class TextureUpdaterExample : MonoBehaviour
 {
 	private Texture texture;
+
+	private Color32[] colorBuffer;
+
+	private GCHandle handle;
 	// Use this for initialization
-	IEnumerator Start () {
+	void Start () {
 	    
 		TextureUpdater.Init();
 		
 		texture = new Texture2D(256, 256, TextureFormat.RGBA32, false);
 		GetComponent<Renderer>().material.mainTexture = texture;
-		Color32[] colorBuffer = new Color32[texture.width * texture.height];
-
+		colorBuffer = new Color32[texture.width * texture.height];		
+	    handle = GCHandle.Alloc(colorBuffer, GCHandleType.Pinned);
+	}
+	
+	void Update()
+	{
 		for (int i = 0; i < colorBuffer.Length; i++)
 		{
 			colorBuffer[i] = GetRandomColor();
 		}
-		
-		GCHandle handle = GCHandle.Alloc(colorBuffer, GCHandleType.Pinned);
 		TextureUpdater.Update(texture, handle.AddrOfPinnedObject());
-		
-		yield return new WaitForSeconds(1f);
-		TextureUpdater.Deinit();
-		yield return new WaitForSeconds(1f);
-
-		handle.Free();
-
 	}
-	
-//	void Update()
-//	{
-//		for (int i = 0; i < colorBuffer.Length; i++)
-//		{
-//			colorBuffer[i] = GetRandomColor();
-//		}
-//		TextureUpdater.Update(texture, colorBuffer);
-//	}
+
+	private void OnDestroy()
+	{
+		TextureUpdater.Deinit();
+		handle.Free();
+	}
 
 	private Color32 GetRandomColor()
 	{

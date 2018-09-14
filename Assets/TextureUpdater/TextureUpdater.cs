@@ -71,27 +71,27 @@ public static class TextureUpdater
         initialized = false;
     }
 
-//    public static void Update(Texture texture, byte[] content)
-//    {
-//        unsafe
-//        {
-//            fixed (byte* contentPtr = content)
-//            {
-//                Update(texture, new IntPtr(contentPtr));
-//            }
-//        }
-//    }
-//
-//    public static void Update(Texture texture, Color32[] content)
-//    {
-//        unsafe
-//        {
-//            fixed (Color32* contentPtr = content)
-//            {
-//                Update(texture, new IntPtr(contentPtr));
-//            }
-//        }
-//    }
+    public static void Update(Texture texture, byte[] content)
+    {
+        unsafe
+        {
+            fixed (byte* contentPtr = content)
+            {
+                Update(texture, new IntPtr(contentPtr));
+            }
+        }
+    }
+
+    public static void Update(Texture texture, Color32[] content)
+    {
+        unsafe
+        {
+            fixed (Color32* contentPtr = content)
+            {
+                Update(texture, new IntPtr(contentPtr));
+            }
+        }
+    }
 
     public static void Update(Texture texture, IntPtr content)
     {
