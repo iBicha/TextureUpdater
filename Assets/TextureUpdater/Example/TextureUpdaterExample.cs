@@ -1,17 +1,41 @@
-using System;
-using System.Collections;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
+using Unity.Collections;
+using Unity.Jobs;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-using Random = UnityEngine.Random;
 
 public class TextureUpdaterExample : MonoBehaviour
 {
+    private struct PlasmaJob : IJobParallelFor
+    {
+        public NativeArray<Color32> colors;
+
+        [ReadOnly] public int width;
+        [ReadOnly] public int height;
+        [ReadOnly] public float time;
+
+        public void Execute(int index)
+        {
+            colors[index] = Plasma(index % width, index / width, width, height, time);
+        }
+        
+        private static Color32 Plasma(int x, int y, int width, int height, float time)
+        {
+            var px = (float) x / width;
+            var py = (float) y / height;
+
+            var l = Mathf.Sin(px * Mathf.Sin(time * 1.3f) + Mathf.Sin(py * 4 + time) * Mathf.Sin(time));
+
+            var r = (byte) (Mathf.Sin(l * 6) * 127 + 127);
+            var g = (byte) (Mathf.Sin(l * 7) * 127 + 127);
+            var b = (byte) (Mathf.Sin(l * 10) * 127 + 127);
+
+            return new Color32(r, g, b, 255);
+        }
+
+    }
+
     private Texture texture;
 
-    private Color32[] colorBuffer;
+    private NativeArray<Color32> colorBuffer;
 
     private void Awake()
     {
@@ -21,41 +45,34 @@ public class TextureUpdaterExample : MonoBehaviour
     private void OnDestroy()
     {
         TextureUpdater.Deinit();
+        colorBuffer.Dispose();
     }
 
     private void Start()
     {
         texture = new Texture2D(256, 256, TextureFormat.RGBA32, false);
         GetComponent<Renderer>().material.mainTexture = texture;
-        colorBuffer = new Color32[texture.width * texture.height];
+        colorBuffer = new NativeArray<Color32>(texture.width * texture.height, Allocator.Persistent);
     }
 
+    private JobHandle SchedulePlasma(int width, int height, float time)
+    {
+        var jobData = new PlasmaJob
+        {
+            colors = colorBuffer,
+            width = width,
+            height = height,
+            time = time
+        };
+        return jobData.Schedule(colorBuffer.Length, 32);
+    }
 
     private void Update()
     {
-        Plasma(colorBuffer, texture.width, texture.height);
+        var handle = SchedulePlasma(texture.width, texture.height, Time.time);
+        handle.Complete();
+
         texture.Update(colorBuffer);
     }
 
-    private void Plasma(Color32[] colors, int width, int height)
-    {
-        var time = Time.time;
-        for (var y = 0; y < height; y++)
-        for (var x = 0; x < width; x++)
-            colors[y * width + x] = Plasma(x, y, width, height, time);
-    }
-
-    private Color32 Plasma(int x, int y, int width, int height, float time)
-    {
-        var px = (float) x / width;
-        var py = (float) y / height;
-
-        var l = Mathf.Sin(px * Mathf.Sin(time * 1.3f) + Mathf.Sin(py * 4 + time) * Mathf.Sin(time));
-
-        var r = (byte) (Mathf.Sin(l * 6) * 127 + 127);
-        var g = (byte) (Mathf.Sin(l * 7) * 127 + 127);
-        var b = (byte) (Mathf.Sin(l * 10) * 127 + 127);
-
-        return new Color32(r, g, b, 255);
-    }
 }

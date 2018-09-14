@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using AOT;
 using System;
 using System.Text;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.Rendering;
 
 
@@ -68,26 +70,25 @@ public static class TextureUpdater
         initialized = false;
     }
 
-    public static void Update(this Texture texture, byte[] content)
+    public static unsafe void Update(this Texture texture, byte[] content)
     {
-        unsafe
+        fixed (byte* contentPtr = content)
         {
-            fixed (byte* contentPtr = content)
-            {
-                Update(texture, new IntPtr(contentPtr));
-            }
+            Update(texture, new IntPtr(contentPtr));
         }
     }
 
-    public static void Update(this Texture texture, Color32[] content)
+    public static unsafe void Update(this Texture texture, Color32[] content)
     {
-        unsafe
+        fixed (Color32* contentPtr = content)
         {
-            fixed (Color32* contentPtr = content)
-            {
-                Update(texture, new IntPtr(contentPtr));
-            }
+            Update(texture, new IntPtr(contentPtr));
         }
+    }
+
+    public static unsafe void Update<T>(this Texture texture, NativeArray<T> content) where T : struct
+    {
+        Update(texture, new IntPtr(content.GetUnsafePtr()));
     }
 
     public static void Update(this Texture texture, IntPtr content)
