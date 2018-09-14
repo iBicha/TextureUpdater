@@ -1,4 +1,6 @@
+using System;
 using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 using UnityEngine;
 
@@ -71,8 +73,21 @@ public class TextureUpdaterExample : MonoBehaviour
     private void Update()
     {
         ScheduleAndWaitForPlasmaJob(colorBuffer, texture.width, texture.height, Time.time);
-
+        
+        //texture.Update(colorBuffer) hangs Unity on .Net 4.6
+#if NET_4_6
+        var tex2d = (Texture2D) texture;
+        unsafe
+        {
+            tex2d.LoadRawTextureData(new IntPtr(colorBuffer.GetUnsafePtr()), colorBuffer.Length * 4);
+        }
+        tex2d.Apply();
+#else
         texture.Update(colorBuffer);
+#endif
+        
     }
+    
+    
 
 }
