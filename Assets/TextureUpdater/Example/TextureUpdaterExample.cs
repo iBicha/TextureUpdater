@@ -34,7 +34,7 @@ public class TextureUpdaterExample : MonoBehaviour
     private void Update()
     {
         Plasma(colorBuffer, texture.width, texture.height);
-        TextureUpdater.Update(texture, colorBuffer);
+        texture.Update(colorBuffer);
     }
 
     private void Plasma(Color32[] colors, int width, int height)

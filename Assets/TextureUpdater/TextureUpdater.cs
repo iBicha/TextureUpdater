@@ -68,7 +68,7 @@ public static class TextureUpdater
         initialized = false;
     }
 
-    public static void Update(Texture texture, byte[] content)
+    public static void Update(this Texture texture, byte[] content)
     {
         unsafe
         {
@@ -79,7 +79,7 @@ public static class TextureUpdater
         }
     }
 
-    public static void Update(Texture texture, Color32[] content)
+    public static void Update(this Texture texture, Color32[] content)
     {
         unsafe
         {
@@ -90,7 +90,7 @@ public static class TextureUpdater
         }
     }
 
-    public static void Update(Texture texture, IntPtr content)
+    public static void Update(this Texture texture, IntPtr content)
     {
         Init();
 
