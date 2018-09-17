@@ -11,7 +11,7 @@ public class TextureUpdaterExample : MonoBehaviour
     [BurstCompile]
     private struct PlasmaJob : IJobParallelFor
     {
-        public NativeArray<Color32> colors;
+        [WriteOnly] public NativeArray<Color32> colors;
 
         [ReadOnly] public int width;
         [ReadOnly] public int height;
