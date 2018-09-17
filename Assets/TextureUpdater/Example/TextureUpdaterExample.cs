@@ -77,7 +77,7 @@ public class TextureUpdaterExample : MonoBehaviour
         ScheduleAndWaitForPlasmaJob(colorBuffer, texture.width, texture.height, Time.time);
         
         //BUG: texture.Update(colorBuffer) hangs the editor on .Net 4.6
-#if NET_4_6
+#if UNITY_EDITOR
         var tex2d = (Texture2D) texture;
         unsafe
         {
