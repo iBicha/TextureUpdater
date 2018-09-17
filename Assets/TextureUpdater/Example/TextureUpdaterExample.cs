@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 using UnityEngine;
+using Unity.Mathematics;
 
 public class TextureUpdaterExample : MonoBehaviour
 {
@@ -25,12 +26,12 @@ public class TextureUpdaterExample : MonoBehaviour
         {
             var px = (float) x / width;
             var py = (float) y / height;
+            
+            var l = math.sin(px * math.sin(time * 1.3f) + math.sin(py * 4 + time) * math.sin(time));
 
-            var l = Mathf.Sin(px * Mathf.Sin(time * 1.3f) + Mathf.Sin(py * 4 + time) * Mathf.Sin(time));
-
-            var r = (byte) (Mathf.Sin(l * 6) * 127 + 127);
-            var g = (byte) (Mathf.Sin(l * 7) * 127 + 127);
-            var b = (byte) (Mathf.Sin(l * 10) * 127 + 127);
+            var r = (byte) (math.sin(l * 6) * 127 + 127);
+            var g = (byte) (math.sin(l * 7) * 127 + 127);
+            var b = (byte) (math.sin(l * 10) * 127 + 127);
 
             return new Color32(r, g, b, 255);
         }
