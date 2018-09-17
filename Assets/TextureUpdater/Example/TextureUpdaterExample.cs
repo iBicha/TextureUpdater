@@ -1,4 +1,5 @@
 using System;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
@@ -6,6 +7,7 @@ using UnityEngine;
 
 public class TextureUpdaterExample : MonoBehaviour
 {
+    [BurstCompile(Accuracy.Std, Support.Relaxed)]
     private struct PlasmaJob : IJobParallelFor
     {
         public NativeArray<Color32> colors;
