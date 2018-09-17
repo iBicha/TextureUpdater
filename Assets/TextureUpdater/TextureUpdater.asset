@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -28,6 +29,24 @@ MonoBehaviour:
   - Architecture: 3
     BuildType: 0
     BuildPlatform: 4
+    AndroidSdkVersion: 0
+    isEnabled: 0
+    foldoutAnimator:
+      m_Target: 0
+      speed: 2
+      m_Value: 0
+  - Architecture: 3
+    BuildType: 0
+    BuildPlatform: 2
+    AndroidSdkVersion: 0
+    isEnabled: 0
+    foldoutAnimator:
+      m_Target: 0
+      speed: 2
+      m_Value: 0
+  - Architecture: 1
+    BuildType: 1
+    BuildPlatform: 1
     AndroidSdkVersion: 0
     isEnabled: 1
     foldoutAnimator:

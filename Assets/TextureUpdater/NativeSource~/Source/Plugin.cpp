@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <IUnityRenderingExtensions.h>
 
 typedef void (*TextureUpdateEvent)(UnityRenderingExtTextureUpdateParams* params);

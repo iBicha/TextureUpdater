@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class TextureUpdaterExample : MonoBehaviour
 {
-    [BurstCompile(Accuracy.Std, Support.Relaxed)]
+    [BurstCompile]
     private struct PlasmaJob : IJobParallelFor
     {
         public NativeArray<Color32> colors;
