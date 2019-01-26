@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 67f4474b9792c45e1a122e264d170796
+guid: ee69098fe58394bcba6514a986d8818d
 PluginImporter:
   externalObjects: {}
   serializedVersion: 2
@@ -29,7 +29,7 @@ PluginImporter:
     second:
       enabled: 1
       settings:
-        CPU: ARMv7
+        CPU: x86
   - first:
       Any: 
     second:
@@ -42,7 +42,7 @@ PluginImporter:
       settings:
         ANDROID_SDK_VERSION: 0
         BUILD_TYPE: Release
-        CPU: ARMv7
+        CPU: x86
         DefaultValueInitialized: true
         OS: AnyOS
         PLUGIN_BUILD_NUMBER: 1
